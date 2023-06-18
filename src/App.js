@@ -1,29 +1,69 @@
-import './App.css';
+import { useEffect, useState } from "react";
+import "./styles.css";
+import { JigsawPuzzle } from "react-jigsaw-puzzle/lib";
+import "react-jigsaw-puzzle/lib/jigsaw-puzzle.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+//Games
+import Memory from "./memorygame/App";
+
+const party = require("party-js");
+
+export default function App() {
+  const [img, setImg] = useState("");
+  const [puzzleImg, setPuzzleImg] = useState("");
+  const [solved, setSolved] = useState(false);
+  const [next, setNext] = useState(0);
+
+  const onSolved = () => {
+    setSolved(true);
+  };
+  useEffect(() => {
+    if (solved)
+      party.confetti(document.getElementsByClassName("congo")[0], {
+        count: party.variation.range(100, 100)
+      });
+  }, [solved]);
+
+  if (next === 0) {
+    return (
+      <div className="App">
+        <h1>UKK FUN & GAMES</h1>
+        <button onClick={() => setNext(1)}>Next Game (Number puzzle)</button>
+        {solved && <h1 className="congo">Congrats</h1>}
+        <div>
+          <input
+            placeholder="Image Url"
+            style={{
+              margin: "1rem",
+              padding: "1rem"
+            }}
+            onChange={(url) => setImg(url.target.value)}
+          />
+          <button
+            style={{ padding: "1rem", color: "#fff", backgroundColor: "#000" }}
+            onClick={() => setPuzzleImg(img)}
           >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
-  );
+            Generate Puzzle
+          </button>
+        </div>
+        <div>
+          <JigsawPuzzle
+            imageSrc={puzzleImg}
+            rows={2}
+            columns={3}
+            onSolved={onSolved}
+          />
+        </div>
+      </div>
+    );
+  }
+  if (next === 1) {
+    return (
+      <div className="App">
+        <h1> UKK FUN & GAMES </h1>
+        <button onClick={() => setNext(0)}>Prev Game (Puzzle)</button>
+        <Memory />
+      </div>
+    );
+  }
 }
-
-export default App;
