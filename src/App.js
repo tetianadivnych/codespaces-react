@@ -27,7 +27,7 @@ export default function App() {
   if (next === 0) {
     return (
       <div className="App">
-        <h1>Game Puzzles</h1>
+        <h1>Puzzles Game</h1>
         <button onClick={() => setNext(1)}>Next Game (Number puzzle)</button>
         {solved && <h1 className="congo">Congrats</h1>}
         <div>
@@ -45,6 +45,12 @@ export default function App() {
           >
             Generate Puzzle
           </button>
+          <button
+            style={{ padding: "1rem", color: "#fff", backgroundColor: "#000" }}
+            onClick={() => setPuzzleImg(img)}
+          >
+            Verify Puzzle
+          </button>
         </div>
         <div>
           <JigsawPuzzle
@@ -60,7 +66,7 @@ export default function App() {
   if (next === 1) {
     return (
       <div className="App">
-        <h1> UKK FUN & GAMES </h1>
+        <h1>Puzzles Game</h1>
         <button onClick={() => setNext(0)}>Prev Game (Puzzle)</button>
         <Memory />
       </div>
