@@ -3,9 +3,6 @@ import "./styles.css";
 import { JigsawPuzzle } from "react-jigsaw-puzzle/lib";
 import "react-jigsaw-puzzle/lib/jigsaw-puzzle.css";
 
-//Games
-import Memory from "./memorygame/App";
-
 const party = require("party-js");
 
 export default function App() {
@@ -60,15 +57,6 @@ export default function App() {
             onSolved={onSolved}
           />
         </div>
-      </div>
-    );
-  }
-  if (next === 1) {
-    return (
-      <div className="App">
-        <h1>Puzzles Game</h1>
-        <button onClick={() => setNext(0)}>Prev Game (Puzzle)</button>
-        <Memory />
       </div>
     );
   }
