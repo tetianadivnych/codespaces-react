@@ -20,51 +20,6 @@ function Game({ toggleTheme }) {
     GameReducer,
     initialState
   );
-
-  const { cellCount, memoryCount } = levelConfig;
-
-  const { field, hiddenCells } = useMemo(
-    () => generateGameField(cellCount, memoryCount),
-    [levelConfig]
-  );
-
-  useEffect(() => setTimeout(dispatch, 500, { type: FIELD_SHOW }), [
-    levelConfig
-  ]);
-
-  function updateLevel(shouldReset) {
-    dispatch({ type: FIELD_HIDE });
-    console.log(level);
-    setTimeout(dispatch, 500, {
-      type: shouldReset ? RESET_LEVEL : NEW_LEVEL,
-      level: level + 1
-    });
-  }
-
-  return (
-    <GameView>
-      <GameFieldView {...levelConfig}>
-        <SwitchView>
-          <div>Level: {level}</div>
-          <div>
-            Theme mode: <Switch onClick={toggleTheme} />
-          </div>
-        </SwitchView>
-        <Field
-          {...levelConfig}
-          levelConfig={levelConfig}
-          visible={showField}
-          key={field}
-          level={level}
-          field={field}
-          hiddenCells={hiddenCells}
-          dispatch={dispatch}
-          showHidden={showHidden}
-          updateLevel={updateLevel}
-        />
-      </GameFieldView>
-    </GameView>
-  );
 }
 
 export default memo(Game);
