@@ -25,7 +25,6 @@ export default function App() {
     return (
       <div className="App">
         <h1>Puzzles Game</h1>
-        <button onClick={() => setNext(1)}>Next Game (Number puzzle)</button>
         {solved && <h1 className="congo">Congrats</h1>}
         <div>
           <input
