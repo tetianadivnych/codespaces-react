@@ -3,9 +3,6 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { getFromTheme } from "./utils";
 import "./index.css";
 
-import Game from "./game";
-import themes from "./config/themes.json";
-
 function Memory() {
   const [themeName, toggleTheme] = useTheme("lightTheme");
 
