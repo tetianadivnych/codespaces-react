@@ -27,7 +27,7 @@ export default function App() {
   if (next === 0) {
     return (
       <div className="App">
-        <h1>UKK FUN & GAMES</h1>
+        <h1>Game Puzzles</h1>
         <button onClick={() => setNext(1)}>Next Game (Number puzzle)</button>
         {solved && <h1 className="congo">Congrats</h1>}
         <div>
