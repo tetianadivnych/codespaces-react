@@ -1,107 +1,85 @@
-import { useEffect, useState } from "react";
+import {useRef} from "react";
 import "./styles.css";
-import { JigsawPuzzle } from "react-jigsaw-puzzle/lib";
-import "react-jigsaw-puzzle/lib/jigsaw-puzzle.css";
-import { splitImage } from "./api/services";
 
-const party = require("party-js");
+const places = [
+    {image: "https://picsum.photos/200", name: "1"},
+    {image: "https://picsum.photos/200", name: "2"},
+    {image: "https://picsum.photos/200", name: "3"},
+    {image: "https://picsum.photos/200", name: "4"}
+];
+
+const pieces = [...places].map((piece) => ({
+    image: piece.image,
+    name: piece.name,
+    position: [Math.random() * 300, Math.random() * 300 + 300],
+}));
 
 export default function App() {
-  const [img, setImg] = useState("");
-  const [puzzleImg, setPuzzleImg] = useState("");
-  const [solved, setSolved] = useState(false);
-  const [next, setNext] = useState(0);
+    const selected = useRef();
 
-  const onSolved = () => {
-    setSolved(true);
-  };
-  useEffect(() => {
-    if (solved)
-      party.confetti(document.getElementsByClassName("congo")[0], {
-        count: party.variation.range(100, 100)
-      });
-  }, [solved]);
+    const handleMouseDown = (event, index) => {
+        selected.current = {index, element: event.target};
+        document.addEventListener("mousemove", handleMouseMove);
+    };
 
-  //function generatePuzzle
+    const handleMouseMove = (event) => {
+        const {index, element} = selected.current;
+        const positionX = event.pageX - element.offsetWidth / 2;
+        const positionY = event.pageY - element.offsetHeight / 2;
+        pieces[index].position = [positionX, positionY];
+        element.style.transform = `translate3d(${positionX}px, ${positionY}px, 0)`;
+    };
 
-  const generatePuzzle = async () => {
-    try {
-      const puzzlePieces = await splitImage(img); // Call the splitImage function with the image URL
-      console.log(puzzlePieces); // Handle the response from the backend as needed
+    const handleMouseUp = () => {
+        const sortedPieces = sortPiecesByPosition(pieces);
+        console.log(sortedPieces.map(p => p.name));
+        endDrag();
+    };
 
-      // Assuming puzzlePieces is a list of strings
-      if (Array.isArray(puzzlePieces) && puzzlePieces.length > 0) {
-        // Create an array to store the decoded images
-        const decodedImages = [];
+    const endDrag = () => {
+        selected.current = null;
+        document.removeEventListener("mousemove", handleMouseMove);
+    };
 
-        // Loop through each puzzle piece
-        for (let i = 0; i < puzzlePieces.length; i++) {
-          // Decode the base64 string into an image
-          const image = new Image();
-          image.src = `data:image/jpeg;base64,${puzzlePieces[i]}`;
-          decodedImages.push(image);
-        }
+    const sortPiecesByPosition = (pieces) => {
+        return [...pieces].sort((a, b) => {
+            const [ax, ay] = a.position;
+            const [bx, by] = b.position;
 
-        // Display the decoded images on the page
-        const imageContainer = document.getElementById("image-container");
+            // Compare the y position first
+            if (Math.abs(ay - by) > 5) {
+                return ay - by;
+            }
 
-        // Clear any existing images
-        imageContainer.innerHTML = "";
+            // If y positions are within the range, compare the x position
+            if (Math.abs(ax - bx) > 5) {
+                return ax - bx;
+            }
 
-        // Append the decoded images to the container
-        decodedImages.forEach((image) => {
-          imageContainer.appendChild(image);
+            // If both x and y positions are within the range, consider them equal
+            return 0;
         });
-      } else {
-        console.log("Invalid response from the backend"); // Handle the case when the response is not as expected
-      }
-    } catch (error) {
-      console.log(error); // Handle any error that occurred during the API call
-    }
-  };
+    };
 
-
-  //end of generatePuzzle
-
-  if (next === 0) {
     return (
-      <div className="App">
-        <h1>Puzzles Game</h1>
-        {solved && <h1 className="congo">Congrats</h1>}
-        <div>
-          <input
-            placeholder="Image Url"
-            style={{
-              margin: "1rem",
-              padding: "1rem"
-            }}
-            onChange={(url) => setImg(url.target.value)}
-          />
-          <button
-            style={{ padding: "1rem", color: "#fff", backgroundColor: "#000" }}
-            // onClick={() => setPuzzleImg(img)} //old version to generate puzzle
-            onClick={generatePuzzle} // Call the generatePuzzle function on button click
-
-          >
-            Generate Puzzle
-          </button>
-          <button
-            style={{ padding: "1rem", color: "#fff", backgroundColor: "#000" }}
-            onClick={() => setPuzzleImg(img)}
-
-          >
-            Verify Puzzle
-          </button>
+        <div className="App">
+            {pieces.map((piece, index) => (
+                <div
+                    key={index}
+                    onMouseDown={(event) => handleMouseDown(event, index)}
+                    onMouseUp={handleMouseUp}
+                    style={{
+                        backgroundImage: `url(${piece.image})`,
+                        backgroundSize: "cover",
+                        width: "64px",
+                        height: "64px",
+                        position: "absolute",
+                        transform: `translate3d(${piece.position[0]}px, ${piece.position[1]}px, 0)`
+                    }}
+                >
+                    {piece.name}
+                </div>
+            ))}
         </div>
-        <div>
-          <JigsawPuzzle
-            imageSrc={puzzleImg}
-            rows={2}
-            columns={3}
-            onSolved={onSolved}
-          />
-        </div>
-      </div>
     );
-  }
 }
