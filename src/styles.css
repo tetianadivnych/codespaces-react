@@ -5,3 +5,7 @@
   .jigsaw-puzzle {
     border: 1px solid black;
   }
+
+div {
+    cursor: grabbing;
+}
