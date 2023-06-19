@@ -31,8 +31,27 @@ export default function App() {
 
       // Assuming puzzlePieces is a list of strings
       if (Array.isArray(puzzlePieces) && puzzlePieces.length > 0) {
-        // Handle the puzzle pieces, e.g., store them in state, display them, etc.
-        // Example: setPieces(puzzlePieces);
+        // Create an array to store the decoded images
+        const decodedImages = [];
+
+        // Loop through each puzzle piece
+        for (let i = 0; i < puzzlePieces.length; i++) {
+          // Decode the base64 string into an image
+          const image = new Image();
+          image.src = `data:image/jpeg;base64,${puzzlePieces[i]}`;
+          decodedImages.push(image);
+        }
+
+        // Display the decoded images on the page
+        const imageContainer = document.getElementById("image-container");
+
+        // Clear any existing images
+        imageContainer.innerHTML = "";
+
+        // Append the decoded images to the container
+        decodedImages.forEach((image) => {
+          imageContainer.appendChild(image);
+        });
       } else {
         console.log("Invalid response from the backend"); // Handle the case when the response is not as expected
       }
@@ -40,6 +59,7 @@ export default function App() {
       console.log(error); // Handle any error that occurred during the API call
     }
   };
+
 
   //end of generatePuzzle
 
