@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import "../api/services";
 import PuzzleAssembler from "./PuzzleAssembler";
 import {splitImage} from "../api/services";

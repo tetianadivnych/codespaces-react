@@ -2,33 +2,32 @@ import {useRef} from "react";
 
 export const PuzzleAssembler = (props) => {
     const {data} = props;
-    console.log('Images received from GeneratePuzzle component: ');
-
-    const pieces = [...data].map((piece) => ({
+    const pieces = [...data].map((piece, index) => ({
         image: piece,
+        name: index,
         position: [Math.random() * 300, Math.random() * 300 + 300],
     }));
-
-    console.log('Pieces')
-    console.log(pieces);
 
     const selected = useRef();
 
     const handleMouseDown = (event, index) => {
-        selected.current = {index, element: event.target};
+        const {offsetX, offsetY} = event.nativeEvent;
+        selected.current = {index, element: event.target, offsetX, offsetY};
         document.addEventListener("mousemove", handleMouseMove);
     };
 
     const handleMouseMove = (event) => {
-        const {index, element} = selected.current;
-        const positionX = event.pageX - element.offsetWidth / 2;
-        const positionY = event.pageY - element.offsetHeight / 2;
+        const {index, element, offsetX, offsetY} = selected.current;
+        const positionX = event.pageX - offsetX;
+        const positionY = event.pageY - offsetY;
         pieces[index].position = [positionX, positionY];
-        element.style.transform = `translate3d(${positionX}px, ${positionY}px, 0)`;
+        element.style.left = `${positionX}px`;
+        element.style.top = `${positionY}px`;
     };
 
     const handleMouseUp = () => {
         const sortedPieces = sortPiecesByPosition(pieces);
+        console.log(sortedPieces);
         console.log(sortedPieces.map(p => p.name));
         endDrag();
     };
@@ -71,7 +70,8 @@ export const PuzzleAssembler = (props) => {
                         width: "64px",
                         height: "64px",
                         position: "absolute",
-                        transform: `translate3d(${piece.position[0]}px, ${piece.position[1]}px, 0)`
+                        left: `${piece.position[0]}px`,
+                        top: `${piece.position[1]}px`
                     }}
                 >
                     {index}
