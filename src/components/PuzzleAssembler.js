@@ -1,12 +1,18 @@
-import {useRef} from "react";
+import {useMemo, useRef, useState} from "react";
+import React from "react";
+import VerifyPuzzles from "./VerifyPuzzles";
 
 export const PuzzleAssembler = (props) => {
     const {data} = props;
-    const pieces = [...data].map((piece, index) => ({
-        image: piece,
-        name: index,
-        position: [Math.random() * 300, Math.random() * 300 + 300],
-    }));
+    const [assembledPuzzles, setAssembledPuzzles] = useState([]);
+
+    const pieces = useMemo(() => {
+        return [...data].map((piece, index) => ({
+            image: piece,
+            name: index,
+            position: [Math.random() * 300, Math.random() * 300 + 300],
+        }));
+    }, [data]);
 
     const selected = useRef();
 
@@ -27,8 +33,7 @@ export const PuzzleAssembler = (props) => {
 
     const handleMouseUp = () => {
         const sortedPieces = sortPiecesByPosition(pieces);
-        console.log(sortedPieces);
-        console.log(sortedPieces.map(p => p.name));
+        setAssembledPuzzles(sortedPieces);
         endDrag();
     };
 
@@ -77,7 +82,8 @@ export const PuzzleAssembler = (props) => {
                     {index}
                 </div>
             ))}
+            <VerifyPuzzles data={assembledPuzzles}/>
         </div>
     );
-}
+};
 export default PuzzleAssembler;

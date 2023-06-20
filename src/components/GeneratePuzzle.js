@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import "../api/services";
 import PuzzleAssembler from "./PuzzleAssembler";
 import {splitImage} from "../api/services";
@@ -7,6 +7,7 @@ import {splitImage} from "../api/services";
 const GeneratePuzzle = () => {
 
     const [puzzleImages, setPuzzleImages] = useState([]);
+
     let imageUrl;
     //function generatePuzzle
 
