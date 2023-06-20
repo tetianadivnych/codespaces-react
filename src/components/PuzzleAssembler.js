@@ -72,8 +72,8 @@ export const PuzzleAssembler = (props) => {
                     style={{
                         backgroundImage: `url(${piece.image.src})`,
                         backgroundSize: "cover",
-                        width: "64px",
-                        height: "64px",
+                        width: "200px",
+                        height: "200px",
                         position: "absolute",
                         left: `${piece.position[0]}px`,
                         top: `${piece.position[1]}px`

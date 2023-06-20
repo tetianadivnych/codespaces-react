@@ -17,9 +17,6 @@ const VerifyPuzzles = (props) => {
     }
 
     async function handleAssembledPuzzles() {
-        console.log("Handle puzzles");
-
-        console.log(data);
         let base64Images = data.map(d => d.image.src.split(',')[1]);
         const response = await verifyPuzzles(base64Images);
         setIsSuccess(response);
