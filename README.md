@@ -1,7 +1,7 @@
 # Description
 This is the React.js frontend part of a project which generates puzzles and enables users to assemble them manually. The application can also check if the assembled puzzles match an original picture. 
 
-Before running this frontend part ensure that your backend is running on port 8080.
+Before running this project ensure that [the backend](https://github.com/tetianadivnych/backend-puzzles-game/tree/main) is running on port 8080.
 
 ## Available Scripts
 
