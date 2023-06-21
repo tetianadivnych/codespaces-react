@@ -33,6 +33,7 @@ export const PuzzleAssembler = (props) => {
 
     const handleMouseUp = () => {
         const sortedPieces = sortPiecesByPosition(pieces);
+        console.log(sortedPieces.map(sortedPiece => sortedPiece.index))
         setAssembledPuzzles(sortedPieces);
         endDrag();
     };
@@ -72,8 +73,8 @@ export const PuzzleAssembler = (props) => {
                     style={{
                         backgroundImage: `url(${piece.image.src})`,
                         backgroundSize: "cover",
-                        width: "200px",
-                        height: "200px",
+                        width: "100px",
+                        height: "100px",
                         position: "absolute",
                         left: `${piece.position[0]}px`,
                         top: `${piece.position[1]}px`
